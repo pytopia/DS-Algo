@@ -33,7 +33,7 @@ def smallest(stones):
     return abs(stones[0])
 
 
-#Qestion 3
+#Question 3
 def closestPoint(points, k):
     pts = [] #create a minHeap
     for x, y in points: #calculate the distance from origin [0,0]
@@ -46,3 +46,40 @@ def closestPoint(points, k):
         dist, x, y = heapq.heappop(pts) #pop from the heap in increasing order cuz its a meanHeap
     res.append([x,y]) #to get the point as requested in the question
     return res
+
+
+
+#Question 4
+def Kthlargest(nums, k):
+
+    #Approach 1: MaxHeap ##build maxheap by putting negative sign on num so the the largest number becomes the smallest number and is the first for minsheap. since we want the kth largest so we pop k-1 times and the next pop will return the kth largest
+    maxheap = [-num for num in nums]
+    heapq.heapify(maxheap)
+
+    for _ in range(k-1):
+        heapq.heappop(maxheap)
+    return heapq.heappop(maxheap)*-1
+
+     #Approach2: MinHeap
+def largest(nums, k):
+    minheap = []
+        
+    for num in nums:
+        heapq.heappush(minheap, -num)
+        
+    for _ in range(k-1):
+        heapq.heappop(minheap)
+        
+    return -minheap[0]
+
+    #Approach 3: MinHeap
+def largest(nums, k):
+    heapq.heapify(nums)
+
+    while len(nums)>k:
+        heapq.heappop(nums)
+
+    return nums[0]
+
+
+
