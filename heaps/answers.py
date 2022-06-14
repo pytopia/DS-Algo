@@ -33,3 +33,16 @@ def smallest(stones):
     return abs(stones[0])
 
 
+#Qestion 3
+def closestPoint(points, k):
+    pts = [] #create a minHeap
+    for x, y in points: #calculate the distance from origin [0,0]
+        dist = (abs(x-0)**2) + (abs(y - 0)**2)
+        pts.append([dist, x, y])
+
+    res = []
+    heapq.heapify(pts)
+    for i in range(k):
+        dist, x, y = heapq.heappop(pts) #pop from the heap in increasing order cuz its a meanHeap
+    res.append([x,y]) #to get the point as requested in the question
+    return res
