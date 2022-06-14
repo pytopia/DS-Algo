@@ -1,3 +1,4 @@
+import collections
 import heapq
 
 
@@ -82,4 +83,26 @@ def largest(nums, k):
     return nums[0]
 
 
+#Question 5
+def smallest(tasks, n):
+    count = collections.Counter(tasks) #simple counter to get the number of each task, same as having a dictionary or hash map
+    maxheap = [-cnt for cnt in count.values()]  #bc we wanna have from most-least frequencies of the tasks
+    heapq.heapify(maxheap) #build heap from the above list via heapify
 
+    time = 0 #initially we start processing at time zero
+    q = collections.deque() #pair [-cnt, idle time]
+     
+    while maxheap or q: #if we have either one then we need to process a task which based on the question takes 1 unit of time so;
+        time += 1
+
+        if maxheap: #if we have maxheap which is not empty
+            cnt = 1 + heapq.heappop(maxheap) #we add 1 since we negate earlier
+
+            if cnt: # if this cnt is not Zero then go n append it to the q
+                q.append([cnt, time + n])  #push it to the queue and check the time to whether reach the time of getting it back to the heap
+
+        if q and q[0][1] == time: #equal to currernt time, time to push back to heap to start the process of that letter again!
+            heapq.heappush(maxheap, q.popleft()[0]) #its gonna pop the first "pair" but we only care abt the cnt, so we wanna the index 0, then we wanna push it back to the heap!
+    
+    return time
+             
