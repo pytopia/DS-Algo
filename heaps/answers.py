@@ -1,3 +1,4 @@
+from cgitb import small
 import collections
 import heapq
 
@@ -106,3 +107,40 @@ def smallest(tasks, n):
     
     return time
              
+
+
+#Question 6
+class Median:
+    def __init__(self):
+        self.small, self.large = [], []
+
+    def add(self,num):
+        heapq.heappush(self.small, -1 * num)
+
+
+        #make sure every element in small is <= every element in the large one; BC both portions are sorted then if we only compare the min n maxes
+        if self.small and self.large and (-1 * self.small[0]) > self.large[0]:
+            val = -1 * heapq.heappop(self.small)
+            heapq.heappush(self.large, val)
+            
+
+        #Uneven size
+        if len(self.small) > len(self.large) + 1: #+1 BC the size difference is bigger than 1
+            val = -1 * heapq.heappop(self.small)
+            heapq.heappush(self.large, val)
+
+
+        if len(self.large) > len(self.small) +1 :
+            val = heapq.heappop(self.large)
+            heapq.heappush(self.small, -1 * val)
+
+
+    def findMedian(self): #if either portions is bigger then we would know that its odd; now if slow is bigger since its sorted then we know the max is median
+        if len(self.small) > len(self.large):
+            return -1 * self.small[0]
+
+
+        elif len(self.large) > len(self.small):
+            return self.large[0]
+
+        return (-1 * self.small[0] + self.large[0]) /2 
